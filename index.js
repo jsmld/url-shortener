@@ -10,17 +10,24 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.get('/encode', async (req, res) => {
+app.get('/encode', (req, res) => {
   const newId = nanoid(7);
-  console.log('The newId:', newId)
 
   const urlPair = { [newId]: req.query.originalUrl }
-  console.log('The urlPair:', urlPair)
 
   urls.push(urlPair)
-  console.log('The urls array:', urls)
 
   res.send(`Your encoded url is: ${newId}`)
+})
+
+app.get('/decode', (req, res) => {
+  const thing = urls.map((obj) => {
+    const [[key, value]] = Object.entries(obj)
+
+    key === req.query.shortUrl && value
+    
+    res.send(`Your decoded short url is: ${value}`)
+  })
 })
 
 app.listen(port, () => {
