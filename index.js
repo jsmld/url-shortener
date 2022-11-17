@@ -7,6 +7,7 @@ const port = 3000
 const urls = []
 
 app.get('/', (req, res) => {
+
   res.send('Hello World!')
 })
 
@@ -26,11 +27,9 @@ app.get('/encode', (req, res) => {
 })
 
 app.get('/decode', (req, res) => {
-  const thing = urls.map((obj) => {
+  urls.map((obj) => {
     const [[key, value]] = Object.entries(obj)
-
     key === req.query.shortUrl && value
-    
     res.write(`Your decoded short url is: ${value}`)
     res.end()
   })
