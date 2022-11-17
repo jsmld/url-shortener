@@ -11,13 +11,18 @@ app.get('/', (req, res) => {
 })
 
 app.get('/encode', (req, res) => {
-  const newId = nanoid(7);
+  if (req.query.url){
+    const newId = nanoid(7)
+    const urlPair = { [newId]: req.query.url }
+    urls.push(urlPair)
 
-  const urlPair = { [newId]: req.query.originalUrl }
-
-  urls.push(urlPair)
-
-  res.send(`Your encoded url is: ${newId}`)
+    res.write(`Your encoded url is: ${newId}`)
+    res.end()
+  }
+  else {
+    res.write('Please enter a url to encode like so: /encode?url=YOUR_URL')
+    res.end()
+  }
 })
 
 app.get('/decode', (req, res) => {
@@ -26,7 +31,8 @@ app.get('/decode', (req, res) => {
 
     key === req.query.shortUrl && value
     
-    res.send(`Your decoded short url is: ${value}`)
+    res.write(`Your decoded short url is: ${value}`)
+    res.end()
   })
 })
 
