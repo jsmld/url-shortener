@@ -1,38 +1,42 @@
-import fs from 'fs'
 import express from 'express'
 import { nanoid } from 'nanoid'
 const app = express()
 const port = 3000
 
-const urls = []
+const urls = {}
 
-app.get('/', (req, res) => {
-
-  res.send('Hello World!')
+app.get('/', (_, res) => {
+  res.write('Welcome to my url shortener!\n')
+  res.write('To encode: /encode?url=YOUR_URL\n')
+  res.write('To decode: /decode?code=YOUR_CODE\n')
+  res.end()
 })
 
 app.get('/encode', (req, res) => {
   if (req.query.url){
     const newId = nanoid(7)
-    const urlPair = { [newId]: req.query.url }
-    urls.push(urlPair)
+    urls[newId] = req.query.url
 
     res.write(`Your encoded url is: ${newId}`)
-    res.end()
   }
   else {
     res.write('Please enter a url to encode like so: /encode?url=YOUR_URL')
-    res.end()
   }
+  res.end()
+
 })
 
 app.get('/decode', (req, res) => {
-  urls.map((obj) => {
-    const [[key, value]] = Object.entries(obj)
-    key === req.query.shortUrl && value
-    res.write(`Your decoded short url is: ${value}`)
-    res.end()
-  })
+  const url = urls[req.query.code]
+  if(url) {
+    res.write(`Your decoded short url is: ${url}`)
+  } else if (!req.query.code) {
+    res.write('Please enter a url to decode like so: /decode?code=YOUR_CODE')
+  }
+  else {
+    res.write(`No url could be found for code: ${req.query.code}`)
+  }
+  res.end()
 })
 
 app.listen(port, () => {
