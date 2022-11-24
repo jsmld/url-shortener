@@ -28,6 +28,6 @@ localhost:3000/decode?code=YOUR_CODE
 ```
 
 
-## Improvements
+## Contributions
 
 There is always room for improvement so please feel free to visit the issues to contribute!
